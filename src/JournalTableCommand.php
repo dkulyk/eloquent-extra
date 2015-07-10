@@ -2,6 +2,7 @@
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Foundation\Composer;
 
 class JournalTableCommand extends Command
 {
@@ -28,15 +29,23 @@ class JournalTableCommand extends Command
     protected $files;
 
     /**
-     * Create a new liqpay table command instance.
+     * @var \Illuminate\Foundation\Composer
+     */
+    protected $composer;
+
+    /**
+     * Create a new session table command instance.
      *
      * @param  \Illuminate\Filesystem\Filesystem  $files
+     * @param  \Illuminate\Foundation\Composer  $composer
+     * @return void
      */
-    public function __construct(Filesystem $files)
+    public function __construct(Filesystem $files, Composer $composer)
     {
         parent::__construct();
 
         $this->files = $files;
+        $this->composer = $composer;
     }
 
     /**
@@ -52,7 +61,7 @@ class JournalTableCommand extends Command
 
         $this->info('Migration created successfully!');
 
-        $this->call('dump-autoload');
+        $this->composer->dumpAutoloads();
     }
 
     /**
@@ -64,7 +73,7 @@ class JournalTableCommand extends Command
     {
         $name = 'create_journaling_table';
 
-        $path = $this->laravel['path'].'/database/migrations';
+        $path = $this->laravel['path.base'].'/database/migrations';
 
         return $this->laravel['migration.creator']->create($name, $path);
     }
