@@ -1,0 +1,34 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use \Illuminate\Database\Schema\Blueprint;
+
+class CreateLiqpayTable extends Migration {
+
+	/**
+	 * Run the migrations.
+	 *
+	 * @return void
+	 */
+	public function up()
+	{
+		Schema::create('journaling_log', function(Blueprint $t)
+		{
+			$t->increments('id');
+			$t->string('order');
+			$t->text('data');
+			$t->timestamps();
+		});
+	}
+
+	/**
+	 * Reverse the migrations.
+	 *
+	 * @return void
+	 */
+	public function down()
+	{
+	    Schema::drop('journaling_log');
+	}
+
+}

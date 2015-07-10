@@ -1,0 +1,23 @@
+{
+  "name": "lnkvisitor/laravel-journaling",
+  "description": "Journaling laravel Eloquent ORM",
+  "require": {
+    "illuminate/database": "5.1.*",
+    "illuminate/support": "5.1.*",
+    "illuminate/config": "5.1.*",
+    "illuminate/console": "5.1.*",
+    "nesbot/carbon": "~1.20"
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Kulyk Dmytro",
+      "email": "lnkvisitor.ts@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Lnk\\Journaling\\": "src/"
+    }
+  }
+}
