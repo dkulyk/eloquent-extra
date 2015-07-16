@@ -1,10 +1,10 @@
 <?php namespace Lnk\Journaling;
 
-use Lnk\Journaling\Traits\Journaling as JournalingTrait;
+use Illuminate\Database\Eloquent\Model;
 
 class JournalObserver
 {
-    public function created(JournalingTrait $object)
+    public function created(Model $object)
     {
         $object->journal()->create([
             'type' => JournalModel::CREATE,
@@ -12,7 +12,7 @@ class JournalObserver
         ]);
     }
 
-    public function updated(JournalingTrait $object)
+    public function updated(Model $object)
     {
         $object->journal()->create([
             'type' => JournalModel::CHANGE,
@@ -20,7 +20,7 @@ class JournalObserver
         ]);
     }
 
-    public function deleted(JournalingTrait $object)
+    public function deleted(Model $object)
     {
         $object->journal()->create([
             'type' => JournalModel::DELETE,
@@ -28,7 +28,7 @@ class JournalObserver
         ]);
     }
 
-    public function restored(JournalingTrait $object)
+    public function restored(Model $object)
     {
         $object->journal()->create([
             'type' => JournalModel::RESTORE,
