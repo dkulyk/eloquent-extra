@@ -2,7 +2,7 @@
   "name": "lnkvisitor/laravel-journaling",
   "description": "Journaling laravel Eloquent ORM",
   "require": {
-    "laravel/framework": "5.1.*",
+    "laravel/framework": "5.2.*",
     "nesbot/carbon": "~1.20"
   },
   "license": "MIT",
