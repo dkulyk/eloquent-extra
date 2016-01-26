@@ -2,7 +2,7 @@
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Foundation\Composer;
+use Illuminate\Support\Composer;
 
 class JournalTableCommand extends Command
 {
@@ -24,21 +24,20 @@ class JournalTableCommand extends Command
     /**
      * The filesystem instance.
      *
-     * @var \Illuminate\Filesystem\Filesystem
+     * @var Filesystem
      */
     protected $files;
 
     /**
-     * @var \Illuminate\Foundation\Composer
+     * @var Composer
      */
     protected $composer;
 
     /**
      * Create a new session table command instance.
      *
-     * @param  \Illuminate\Filesystem\Filesystem  $files
-     * @param  \Illuminate\Foundation\Composer  $composer
-     * @return void
+     * @param  Filesystem $files
+     * @param  Composer   $composer
      */
     public function __construct(Filesystem $files, Composer $composer)
     {
@@ -51,7 +50,7 @@ class JournalTableCommand extends Command
     /**
      * Execute the console command.
      *
-     * @return void
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function fire()
     {
@@ -73,9 +72,9 @@ class JournalTableCommand extends Command
     {
         $name = 'create_journaling_table';
 
-        $path = $this->laravel['path.base'].'/database/migrations';
+        $path = $this->laravel->make('path.base').'/database/migrations';
 
-        return $this->laravel['migration.creator']->create($name, $path);
+        return $this->laravel->make('migration.creator')->create($name, $path);
     }
 
 }

@@ -18,6 +18,6 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     public function boot()
     {
         $configPath = __DIR__.'/../config/journaling.php';
-        $this->publishes([$configPath => $this->app['path.config'].'/journaling.php'], 'config');
+        $this->publishes([$configPath => $this->app->make('path.config').'/journaling.php'], 'config');
     }
 }
