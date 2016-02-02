@@ -1,5 +1,5 @@
 {
-  "name": "lnkvisitor/laravel-journaling",
+  "name": "dkulyk/eloquent-log",
   "description": "Journaling laravel Eloquent ORM",
   "require": {
     "laravel/framework": "5.2.x"
@@ -13,7 +13,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "Lnk\\Journaling\\": "src/"
+      "DKulyk\\Journaling\\": "src/"
     }
   }
 }
