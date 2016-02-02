@@ -1,4 +1,4 @@
-<?php namespace Lnk\Journaling;
+<?php namespace DKulyk\Journaling;
 
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider

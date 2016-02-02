@@ -1,4 +1,4 @@
-<?php namespace Lnk\Journaling;
+<?php namespace DKulyk\Journaling;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model as Eloquent;

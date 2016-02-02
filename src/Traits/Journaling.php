@@ -1,7 +1,7 @@
-<?php namespace Lnk\Journaling\Traits;
+<?php namespace DKulyk\Journaling\Traits;
 
-use \Lnk\Journaling\JournalModel;
-use \Lnk\Journaling\JournalObserver;
+use DKulyk\Journaling\JournalModel;
+use DKulyk\Journaling\JournalObserver;
 use Illuminate\Database\Eloquent\Model;
 
 /**

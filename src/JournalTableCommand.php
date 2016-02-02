@@ -1,4 +1,4 @@
-<?php namespace Lnk\Journaling;
+<?php namespace DKulyk\Journaling;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
