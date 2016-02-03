@@ -14,7 +14,7 @@ class CreateJournalingTable extends Migration
     public function up()
     {
         Schema::create(
-            'journaling_log',
+            'eloquent_log',
             function (Blueprint $table) {
                 $table->increments('id');
                 $table->integer('owner_id', false, true);
@@ -34,6 +34,6 @@ class CreateJournalingTable extends Migration
      */
     public function down()
     {
-        Schema::drop('journaling_log');
+        Schema::drop('eloquent_log');
     }
 }

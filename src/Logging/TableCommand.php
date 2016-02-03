@@ -1,10 +1,10 @@
-<?php namespace DKulyk\Journaling;
+<?php namespace DKulyk\Eloquent\Logging;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Composer;
 
-class JournalTableCommand extends Command
+class TableCommand extends Command
 {
 
     /**

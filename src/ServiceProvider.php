@@ -1,23 +1,22 @@
-<?php namespace DKulyk\Journaling;
-
+<?php namespace DKulyk\Eloquent;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
     public function register()
     {
-        $configPath = __DIR__.'/../config/journaling.php';
-        $this->mergeConfigFrom($configPath, 'journaling');
+        $configPath = __DIR__.'/../config/eloquent-extra.php';
+        $this->mergeConfigFrom($configPath, 'eloquent-extra');
 
-        $this->app->bind('command.journaling.database', function ($app) {
-            return new JournalTableCommand($app['files'], $app['composer']);
+        $this->app->bind('command.eloquent-extra.logging-table', function ($app) {
+            return new Logging\TableCommand($app['files'], $app['composer']);
         }, true);
 
-        $this->commands('command.journaling.database');
+        $this->commands('command.eloquent-extra.logging-table');
     }
 
     public function boot()
     {
-        $configPath = __DIR__.'/../config/journaling.php';
-        $this->publishes([$configPath => $this->app->make('path.config').'/journaling.php'], 'config');
+        $configPath = __DIR__.'/../config/eloquent-extra.php';
+        $this->publishes([$configPath => $this->app->make('path.config').'/eloquent-extra.php'], 'config');
     }
 }
