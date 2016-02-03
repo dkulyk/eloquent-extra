@@ -1,18 +1,29 @@
 <?php namespace DKulyk\Eloquent\Logging;
 
 use Illuminate\Console\Command;
+use Illuminate\Database\Console\Migrations\BaseCommand;
+use Illuminate\Database\Migrations\MigrationCreator;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Composer;
 
-class TableCommand extends Command
+class TableCommand extends BaseCommand
 {
+
+    /**
+     * The console command signature.
+     *
+     * @var string
+     */
+    protected $signature
+        = 'eloquent-extra:log-table
+        {--path= : The location where the migration file should be created.}';
 
     /**
      * The console command name.
      *
      * @var string
      */
-    protected $name = 'eloquent-extra:table';
+    protected $name = 'eloquent-extra:log-table';
 
     /**
      * The console command description.
@@ -22,6 +33,20 @@ class TableCommand extends Command
     protected $description = 'Create a migration for the journaling table';
 
     /**
+     * The migration creator instance.
+     *
+     * @var \Illuminate\Database\Migrations\MigrationCreator
+     */
+    protected $creator;
+
+    /**
+     * The Composer instance.
+     *
+     * @var \Illuminate\Support\Composer
+     */
+    protected $composer;
+
+    /**
      * The filesystem instance.
      *
      * @var Filesystem
@@ -29,22 +54,19 @@ class TableCommand extends Command
     protected $files;
 
     /**
-     * @var Composer
-     */
-    protected $composer;
-
-    /**
      * Create a new session table command instance.
      *
-     * @param  Filesystem $files
-     * @param  Composer   $composer
+     * @param MigrationCreator $creator
+     * @param Composer         $composer
+     * @param Filesystem       $files
      */
-    public function __construct(Filesystem $files, Composer $composer)
+    public function __construct(MigrationCreator $creator, Composer $composer, Filesystem $files)
     {
         parent::__construct();
 
-        $this->files = $files;
+        $this->creator = $creator;
         $this->composer = $composer;
+        $this->files = $files;
     }
 
     /**
@@ -54,27 +76,31 @@ class TableCommand extends Command
      */
     public function fire()
     {
-        $fullPath = $this->createBaseMigration();
+        $name = 'create_eloquent_log_table';
 
-        $this->files->put($fullPath, $this->files->get(__DIR__.'/stubs/database.stub'));
+        $path = $this->creator->create($name, $this->getMigrationPath());
 
-        $this->info('Migration created successfully!');
+        $file = pathinfo($path, PATHINFO_FILENAME);
+
+        $this->files->put($path, $this->files->get(__DIR__.'/stubs/database.stub'));
+
+        $this->line("<info>Created Migration:</info> $file");
 
         $this->composer->dumpAutoloads();
     }
 
     /**
-     * Create a base migration file for the session.
+     * Get migration path (either specified by '--path' option or default location).
      *
      * @return string
      */
-    protected function createBaseMigration()
+    protected function getMigrationPath()
     {
-        $name = 'create_journaling_table';
+        if (!is_null($targetPath = $this->input->getOption('path'))) {
+            return $this->laravel->basePath().'/'.$targetPath;
+        }
 
-        $path = $this->laravel->make('path.base').'/database/migrations';
-
-        return $this->laravel->make('migration.creator')->create($name, $path);
+        return parent::getMigrationPath();
     }
 
 }
