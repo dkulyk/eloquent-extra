@@ -20,6 +20,9 @@ trait Logging
         return $this->morphMany(Logging\Model::class, 'object');
     }
 
+    /**
+     * The "booting" method of the trait.
+     */
     public static function bootLogging()
     {
         static::observe(Logging\Listener::class);
