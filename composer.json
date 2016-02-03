@@ -2,7 +2,8 @@
   "name": "dkulyk/eloquent-extra",
   "description": "Additional features for laravel Eloquent ORM",
   "require": {
-    "laravel/framework": "5.2.x"
+    "illuminate/database": "^5.2",
+    "illuminate/support": "^5.2"
   },
   "license": "MIT",
   "authors": [

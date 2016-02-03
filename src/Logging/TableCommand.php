@@ -12,7 +12,7 @@ class TableCommand extends Command
      *
      * @var string
      */
-    protected $name = 'journaling:table';
+    protected $name = 'eloquent-extra:table';
 
     /**
      * The console command description.
