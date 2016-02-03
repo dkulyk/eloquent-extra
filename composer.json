@@ -1,6 +1,6 @@
 {
-  "name": "dkulyk/eloquent-log",
-  "description": "Journaling laravel Eloquent ORM",
+  "name": "dkulyk/eloquent-extra",
+  "description": "Additional features for laravel Eloquent ORM",
   "require": {
     "laravel/framework": "5.2.x"
   },
@@ -13,7 +13,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "DKulyk\\Journaling\\": "src/"
+      "DKulyk\\Eloquent\\": "src/"
     }
   }
 }
