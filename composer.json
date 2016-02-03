@@ -1,20 +1,33 @@
 {
-  "name": "dkulyk/eloquent-extra",
-  "description": "Additional features for laravel Eloquent ORM",
-  "require": {
-    "illuminate/database": "^5.2",
-    "illuminate/support": "^5.2"
-  },
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Kulyk Dmytro",
-      "email": "lnkvisitor.ts@gmail.com"
+    "name": "dkulyk/eloquent-extra",
+    "description": "Additional features for laravel Eloquent ORM",
+    "require": {
+        "illuminate/database": "^5.2",
+        "illuminate/support": "^5.2",
+        "illuminate/validation": "~5.2",
+        "nesbot/carbon": "^1.21"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.0",
+        "mockery/mockery": "^0.9.4",
+        "fzaninotto/faker": "~1.4",
+        "orchestra/testbench": "~3.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Kulyk Dmytro",
+            "email": "lnkvisitor.ts@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "DKulyk\\Eloquent\\": "src/DKulyk/Eloquent/"
+        }
+    },
+    "autoload-dev": {
+        "classmap": [
+            "tests/"
+        ]
     }
-  ],
-  "autoload": {
-    "psr-4": {
-      "DKulyk\\Eloquent\\": "src/"
-    }
-  }
 }

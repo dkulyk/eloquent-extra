@@ -30,7 +30,7 @@ trait Validation
         static::saving(
             function (Eloquent $model) {
                 /* @var Eloquent|Validation $model */
-                return $model->autoValidation ? !$model->validate() : true;
+                return $model->autoValidation ? $model->validate() : true;
             }
         );
     }
