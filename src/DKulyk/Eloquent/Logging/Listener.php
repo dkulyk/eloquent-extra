@@ -18,8 +18,8 @@ class Listener
     public function updated(Eloquent $object)
     {
         $object->logs()->create([
-            'type' => Model::CHANGE,
-            'data' => $object->getAttributes()
+            'type' => Model::UPDATE,
+            'data' => $object->getOriginal()
         ]);
     }
 
@@ -27,7 +27,7 @@ class Listener
     {
         $object->logs()->create([
             'type' => Model::DELETE,
-            'data' => $object->getAttributes()
+            'data' => $object->getOriginal()
         ]);
     }
 
@@ -35,7 +35,7 @@ class Listener
     {
         $object->logs()->create([
             'type' => Model::RESTORE,
-            'data' => $object->getAttributes()
+            'data' => $object->getOriginal()
         ]);
     }
 }
