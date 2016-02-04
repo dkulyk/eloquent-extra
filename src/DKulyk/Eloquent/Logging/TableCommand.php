@@ -47,26 +47,17 @@ class TableCommand extends BaseCommand
     protected $composer;
 
     /**
-     * The filesystem instance.
-     *
-     * @var Filesystem
-     */
-    protected $files;
-
-    /**
      * Create a new session table command instance.
      *
      * @param MigrationCreator $creator
      * @param Composer         $composer
-     * @param Filesystem       $files
      */
-    public function __construct(MigrationCreator $creator, Composer $composer, Filesystem $files)
+    public function __construct(MigrationCreator $creator, Composer $composer)
     {
         parent::__construct();
 
         $this->creator = $creator;
         $this->composer = $composer;
-        $this->files = $files;
     }
 
     /**
@@ -76,13 +67,14 @@ class TableCommand extends BaseCommand
      */
     public function fire()
     {
+        $files = $this->creator->getFilesystem();
         $name = 'create_eloquent_log_table';
 
         $path = $this->creator->create($name, $this->getMigrationPath());
 
         $file = pathinfo($path, PATHINFO_FILENAME);
 
-        $this->files->put($path, $this->files->get(__DIR__.'/stubs/database.stub'));
+        $files->put($path, $files->get(__DIR__.'/stubs/database.stub'));
 
         $this->line("<info>Created Migration:</info> $file");
 
