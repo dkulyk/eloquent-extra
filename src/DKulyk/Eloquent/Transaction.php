@@ -2,7 +2,7 @@
 
 namespace DKulyk\Eloquent;
 
-use Throwable;
+use Exception;
 
 /**
  * Class Transaction
@@ -18,7 +18,7 @@ trait Transaction
      * @param  array $options
      *
      * @return bool
-     * @throws Throwable
+     * @throws Exception
      */
     public function save(array $options = [])
     {
@@ -34,7 +34,7 @@ trait Transaction
      * @param array $options
      *
      * @return bool
-     * @throws Throwable
+     * @throws Exception
      */
     public function saveWithinTransaction(array $options = [])
     {
@@ -47,7 +47,7 @@ trait Transaction
                 $connection->rollBack();
             }
             return $saved;
-        } catch (Throwable $e) {
+        } catch (Exception $e) {
             $connection->rollBack();
             throw  $e;
         }
