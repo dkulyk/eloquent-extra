@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'table' => 'journaling_log'
+    'logging_table' => 'eloquent_log'
 ];
