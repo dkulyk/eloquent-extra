@@ -7,14 +7,11 @@ use DKulyk\Eloquent\Properties\Value;
 class DateValue extends Value
 {
     /**
-     * Value casting.
+     * The attributes that should be mutated to dates.
      *
      * @var array
      */
-    protected $casts
-        = [
-            'value' => 'date',
-        ];
+    protected $dates = ['value'];
 
     /**
      * The storage format of the model's date columns.
