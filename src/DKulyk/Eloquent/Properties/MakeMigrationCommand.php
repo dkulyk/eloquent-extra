@@ -1,10 +1,10 @@
-<?php namespace DKulyk\Eloquent\Logging;
+<?php namespace DKulyk\Eloquent\Properties;
 
 use Illuminate\Database\Console\Migrations\BaseCommand;
 use Illuminate\Database\Migrations\MigrationCreator;
 use Illuminate\Support\Composer;
 
-class TableCommand extends BaseCommand
+class MakeMigrationCommand extends BaseCommand
 {
 
     /**
@@ -13,7 +13,7 @@ class TableCommand extends BaseCommand
      * @var string
      */
     protected $signature
-        = 'eloquent-extra:logging
+        = 'eloquent-extra:properties
         {--path= : The location where the migration file should be created.}';
 
     /**
@@ -21,14 +21,14 @@ class TableCommand extends BaseCommand
      *
      * @var string
      */
-    protected $name = 'eloquent-extra:logging';
+    protected $name = 'eloquent-extra:properties';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create a migration for the logging table';
+    protected $description = 'Create a migration for the properties tables';
 
     /**
      * The migration creator instance.
@@ -66,7 +66,7 @@ class TableCommand extends BaseCommand
     public function fire()
     {
         $files = $this->creator->getFilesystem();
-        $name = 'create_eloquent_log_table';
+        $name = 'create_properties_tables';
 
         $path = $this->creator->create($name, $this->getMigrationPath());
 

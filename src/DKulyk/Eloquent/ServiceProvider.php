@@ -1,5 +1,6 @@
 <?php namespace DKulyk\Eloquent;
 
+use DKulyk\Eloquent\Properties\Factory;
 use Illuminate\Foundation\Application;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
@@ -14,15 +15,32 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         $this->mergeConfigFrom($this->configPath(), 'eloquent-extra');
 
         $this->app->bind(
-            'command.eloquent-extra.logging-table', function (Application $app) {
-            return new Logging\TableCommand(
-                $app->make('migration.creator'),
-                $app->make('composer')
-            );
-        }, true
+            'command.eloquent-extra.logging-table',
+            function (Application $app) {
+                return new Logging\TableCommand(
+                    $app->make('migration.creator'),
+                    $app->make('composer')
+                );
+            }, true
+        );
+
+        $this->app->bind(
+            'command.eloquent-extra.properties-table',
+            function (Application $app) {
+                return new Properties\MakeMigrationCommand(
+                    $app->make('migration.creator'),
+                    $app->make('composer')
+                );
+            }, true
         );
 
         $this->commands('command.eloquent-extra.logging-table');
+        $this->commands('command.eloquent-extra.properties-table');
+
+        $types = (array)$this->app->make('config')->get('eloquent-extra.property_types', []);
+        foreach ($types as $type => $class) {
+            Factory::registerType($type, $class);
+        }
     }
 
     public function boot()
