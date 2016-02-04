@@ -350,11 +350,11 @@ final class Factory
         }
 
         $v->setConnection($this->entity->getConnectionName());
+        $v->setRelation('property', $property);
 
         $v->forceFill(
             [
                 'property_id' => $property->getKey(),
-                'entity_id'   => $this->entity->getKey(),
                 'value'       => $value,
             ]
         );
@@ -402,6 +402,7 @@ final class Factory
                 if ($value instanceof Collection) {
                     $inserts = $inserts->merge($value->where('exists', false, true));
                 } else {
+                    $value->setAttribute('entity_id', $this->entity->getKey());
                     $value->save();
                 }
             }
@@ -409,7 +410,7 @@ final class Factory
             if ($inserts->count() > 0) {
                 $data = $inserts->map(
                     function (Value $value) {
-                        return $value->attributesToArray();
+                        return ['entity_id' => $this->entity->getKey()] + $value->attributesToArray();
                     }
                 );
                 $connection->table($instance->getTable())->insert($data->all());

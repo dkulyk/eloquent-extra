@@ -45,7 +45,7 @@ class Value extends Eloquent
      */
     public function __construct(array $attributes = [])
     {
-        $this->table = Config::get('eloquent-extra.values_table',$this->table);
+        $this->table = Config::get('eloquent-extra.values_table', $this->table);
         parent::__construct($attributes);
     }
 
@@ -67,6 +67,7 @@ class Value extends Eloquent
         $model->setRelation('property', $property);
         $model->setRawAttributes((array)$attributes, true);
         $model->setConnection($connection ?: $this->connection);
+
         return $model;
     }
 
