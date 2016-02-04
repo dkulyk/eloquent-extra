@@ -5,17 +5,11 @@
  *
  * @property string $email
  */
-class Contact extends \Illuminate\Database\Eloquent\Model
+abstract class Contact extends \Illuminate\Database\Eloquent\Model
 {
-    use \DKulyk\Eloquent\Validation;
-    use \DKulyk\Eloquent\Logging;
+    protected $table = 'contacts';
 
     protected $fillable = ['email'];
 
-    protected function rules()
-    {
-        return [
-            'email' => 'required|email',
-        ];
-    }
+
 }

@@ -5,7 +5,7 @@ class LoggingTest extends TestCase
     /** @test */
     public function t1_logging_test()
     {
-        $contact = Contact::create(['email' => 'test2@example.com']);
+        $contact = ContactLogging::create(['email' => 'test2@example.com']);
         $contact->email = 'test3@example.com';
         $contact->save();
         static::assertEquals(2, $contact->logs->count());
