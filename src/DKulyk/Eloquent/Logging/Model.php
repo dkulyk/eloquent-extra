@@ -14,11 +14,12 @@ use Illuminate\Support\Facades\Auth;
  * @property \Carbon\Carbon $created_at
  * @property string         $data
  * @property integer        $owner_id
+ * @property-read Eloquent  $object
  */
 class Model extends Eloquent
 {
     const CREATE = 1;
-    const CHANGE = 2;
+    const UPDATE = 2;
     const DELETE = 3;
     const RESTORE = 4;
 
@@ -59,6 +60,7 @@ class Model extends Eloquent
      */
     protected $casts
         = [
+            'type'       => 'integer',
             'data'       => 'array',
             'created_at' => 'datetime',
         ];
@@ -75,9 +77,29 @@ class Model extends Eloquent
         parent::__construct($attributes);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     */
     public function object()
     {
         return $this->morphTo();
+    }
+
+    /**
+     * Get restored model
+     *
+     * @param bool $save
+     *
+     * @return Eloquent
+     */
+    public function restore($save = true)
+    {
+        $object = $this->object->fill($this->data);
+        if ($save) {
+            $object->save();
+        }
+
+        return $object;
     }
 
     /**
