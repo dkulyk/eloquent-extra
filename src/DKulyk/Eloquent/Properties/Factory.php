@@ -225,7 +225,7 @@ final class Factory
         if ($this->values === null) {
             $this->entity->load('values');
         }
-        return $this->values;
+        return $this->values ?: $this->values = new Collection();
     }
 
     /**
