@@ -64,7 +64,7 @@ class QueryScope implements Scope
         if (is_array($wheres)) {
             foreach ($wheres as &$where) {
 
-                if (in_array($where['type'], ['Basic', 'Null'], true)) {
+                if (in_array($where['type'], ['Basic', 'Null','In'], true)) {
                     $column = str_replace($table.'.', '', $where['column']);
                     $property = $properties->get($column);
                     if ($property !== null) {
