@@ -225,6 +225,7 @@ final class Factory
         if ($this->values === null) {
             $this->entity->load('values');
         }
+
         return $this->values ?: $this->values = new Collection();
     }
 
@@ -307,7 +308,6 @@ final class Factory
      * @param mixed  $value
      *
      * @throws \InvalidArgumentException
-     * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      */
     public function setValue($key, $value)
     {
@@ -315,13 +315,15 @@ final class Factory
         $property = $this->properties->get($key);
         $v = $this->getPropertyValue($key);
         if ($property->multiple) {
-            if (!is_array($value) && !$value instanceof Collection) {
+            if ($value !== null && !is_array($value) && !$value instanceof Collection) {
                 throw new \InvalidArgumentException('Value must be array');
             }
             $this->queuedDelete($property);
             $this->getPropertyValues()->put($property->name, new Collection());
-            foreach ($value as $val) {
-                $this->addValue($property, $val);
+            if ($value !== null) {
+                foreach ($value as $val) {
+                    $this->addValue($property, $val);
+                }
             }
         } else {
             /* @var Value $value */
