@@ -109,6 +109,30 @@ trait Properties
     }
 
     /**
+     * Determine if an attribute exists on the model.
+     *
+     * @param  string $key
+     *
+     * @return bool
+     */
+    public function __isset($key)
+    {
+        return parent::__isset($key) || $this->getPropertyFactory()->has($key);
+    }
+
+    /**
+     * Unset an attribute on the model.
+     *
+     * @param string $key
+     */
+    public function __unset($key)
+    {
+        $factory = $this->getPropertyFactory();
+        parent::__unset($key);
+        $factory->has($key) && $factory->setValue($key, null);
+    }
+
+    /**
      * Get an attribute array of all arrayable attributes.
      *
      * @return array
