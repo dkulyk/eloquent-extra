@@ -192,25 +192,27 @@ final class Factory
      *
      * @param Collection $values
      */
-    public function setPropertyValues(Collection $values)
+    public function setPropertyValues(Collection $values = null)
     {
         $this->values = new Collection();
-        $values->each(
-            function (Value $v) use ($values) {
-                $property = $v->property;
-                if ($property->multiple) {
-                    /* @var Collection $vs */
-                    $vs = $this->values->get($property->name, null);
-                    if ($vs === null) {
-                        $this->values->put($property->name, new Collection([$v]));
+        if ($values !== null) {
+            $values->each(
+                function (Value $v) use ($values) {
+                    $property = $v->property;
+                    if ($property->multiple) {
+                        /* @var Collection $vs */
+                        $vs = $this->values->get($property->name, null);
+                        if ($vs === null) {
+                            $this->values->put($property->name, new Collection([$v]));
+                        } else {
+                            $vs->push($v);
+                        }
                     } else {
-                        $vs->push($v);
+                        $this->values->put($property->name, $v);
                     }
-                } else {
-                    $this->values->put($property->name, $v);
                 }
-            }
-        );
+            );
+        }
     }
 
     /**
@@ -220,7 +222,10 @@ final class Factory
      */
     public function getPropertyValues()
     {
-        return $this->values ?: $this->values = new Collection();
+        if ($this->values === null) {
+            $this->entity->load('values');
+        }
+        return $this->values;
     }
 
     /**

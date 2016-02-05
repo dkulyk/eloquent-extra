@@ -111,6 +111,8 @@ class Values extends HasOneOrMany
                 $value = $this->getRelationValue($dictionary, $key, 'many');
 
                 $model->getPropertyFactory()->setPropertyValues($value);
+            } else {
+                $model->getPropertyFactory()->setPropertyValues(null);
             }
         }
 
