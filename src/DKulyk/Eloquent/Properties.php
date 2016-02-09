@@ -132,6 +132,7 @@ trait Properties
     protected function getArrayableAttributes()
     {
         /* @var Eloquent $this */
-        return parent::getArrayableAttributes() + $this->getArrayableItems($this->getPropertyFactory()->getValuesToArray());
+        //only simple properties need merge
+        return parent::getArrayableAttributes() + $this->getArrayableItems($this->getPropertyFactory()->getValuesToArray(false));
     }
 }

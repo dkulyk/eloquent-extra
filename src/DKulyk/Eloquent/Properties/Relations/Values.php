@@ -4,11 +4,46 @@ namespace DKulyk\Eloquent\Properties\Relations;
 
 use DKulyk\Eloquent\Properties;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection as BaseCollection;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
+use Illuminate\Database\Eloquent\Builder;
 
 class Values extends HasOneOrMany
 {
+    /**
+     * @var BaseCollection|Properties\Property[]
+     */
+    protected $properties;
+
+    /**
+     * Values constructor.
+     *
+     * @param Builder        $query
+     * @param Eloquent       $parent
+     * @param string         $foreignKey
+     * @param string         $localKey
+     * @param BaseCollection $properties
+     */
+    public function __construct(Builder $query, Eloquent $parent, $foreignKey, $localKey, BaseCollection $properties = null)
+    {
+        $this->setProperties($properties);
+        parent::__construct($query, $parent, $foreignKey, $localKey);
+    }
+
+    /**
+     * @return Properties\Property[]|BaseCollection
+     */
+    protected function getProperties()
+    {
+        return $this->properties ?: $this->getParent()->getPropertyFactory()->getProperties();
+    }
+
+    public function setProperties(BaseCollection $properties = null)
+    {
+        $this->properties = $properties === null ? null : $properties->keyBy('name');
+    }
+
     /**
      * Get the results of the relationship.
      *
@@ -16,6 +51,20 @@ class Values extends HasOneOrMany
      */
     public function getResults()
     {
+        $this->addPropertyConstraints();
+
+        return $this->query->get();
+    }
+
+    /**
+     * Get the relationship for eager loading.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getEager()
+    {
+        $this->addPropertyConstraints();
+
         return $this->query->get();
     }
 
@@ -47,41 +96,13 @@ class Values extends HasOneOrMany
      */
     public function addPropertyConstraints()
     {
-        $properties = $this->getParent()->getPropertyFactory()->getProperties();
+        $properties = $this->getProperties();
         if ($properties->count()) {
             $this->query->getQuery()
                 ->whereIn('property_id', $properties->pluck('id'));
         } else {
             $this->query->getQuery()->whereIn('property_id', []);
         }
-    }
-
-    /**
-     * Set the base constraints on the relation query.
-     *
-     * @return void
-     */
-    public function addConstraints()
-    {
-        if (static::$constraints) {
-            $this->query->where($this->foreignKey, '=', $this->getParentKey());
-
-            $this->query->getQuery()->whereNotNull($this->foreignKey);
-            $this->addPropertyConstraints();
-        }
-    }
-
-    /**
-     * Set the constraints for an eager load of the relation.
-     *
-     * @param  array $models
-     *
-     * @return void
-     */
-    public function addEagerConstraints(array $models)
-    {
-        $this->query->getQuery()->whereIn($this->foreignKey, $this->getKeys($models, $this->localKey));
-        $this->addPropertyConstraints();
     }
 
     /**
@@ -100,6 +121,7 @@ class Values extends HasOneOrMany
         }
 
         $dictionary = $this->buildDictionary($results);
+        $properties = $this->getProperties();
 
         // Once we have the dictionary we can simply spin through the parent models to
         // link them up with their children using the keyed dictionary to make the
@@ -110,9 +132,9 @@ class Values extends HasOneOrMany
             if (array_key_exists($key, $dictionary)) {
                 $value = $this->getRelationValue($dictionary, $key, 'many');
 
-                $model->getPropertyFactory()->setPropertyValues($value);
+                $model->getPropertyFactory()->setPropertyValues($properties, $value);
             } else {
-                $model->getPropertyFactory()->setPropertyValues(null);
+                $model->getPropertyFactory()->setPropertyValues($properties, null);
             }
         }
 

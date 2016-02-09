@@ -165,16 +165,6 @@ final class Factory
         $this->entity = $entity;
         $this->values = new Collection();
         $this->properties = Factory::getPropertiesByEntity($entity);
-//        $this->properties->each(
-//            function (Properties\Property $property) {
-//                $this->entity->setRelation(
-//                    $property->name,
-//                    $property->multiple
-//                        ? new Properties\MultipleCollection($this, $property)
-//                        : $property->default_value
-//                );
-//            }
-//        );
     }
 
     /**
@@ -267,21 +257,22 @@ final class Factory
     /**
      * Get values as array
      *
+     * @param boolean $all
      * @return array
      */
-    public function getValuesToArray()
+    public function getValuesToArray($all = true)
     {
         return $this->getProperties()->filter(
             function ($property, $name) {
                 return $this->loaded === true || in_array($name, $this->loaded, true);
             }
         )->map(
-            function (Property $property) {
+            function (Property $property) use ($all) {
                 $value = $this->getPropertyValue($property->name);
                 if ($value instanceof Value) {
                     return Arr::get($value->attributesToArray(), 'value');
                 }
-                if ($value instanceof Collection) {
+                if ($all &&  $value instanceof Collection) {
                     return $value->map(
                         function (Value $value) {
                             return Arr::get($value->attributesToArray(), 'value');
