@@ -39,5 +39,11 @@ class MultipleCollection extends Collection
     public function add($value)
     {
         $this->factory->addValue($this->property, $value);
+        $this->factory->updateValue($this->property->name);
+    }
+
+    public function setValues(Collection $values)
+    {
+        $this->items = $values->all();
     }
 }

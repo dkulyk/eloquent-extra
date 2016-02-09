@@ -146,6 +146,11 @@ final class Factory
     protected $values;
 
     /**
+     * @var string[]
+     */
+    protected $loaded = [];
+
+    /**
      * @var Property[]
      */
     protected $queue = [];
@@ -158,7 +163,18 @@ final class Factory
     public function __construct(Eloquent $entity)
     {
         $this->entity = $entity;
+        $this->values = new Collection();
         $this->properties = Factory::getPropertiesByEntity($entity);
+//        $this->properties->each(
+//            function (Properties\Property $property) {
+//                $this->entity->setRelation(
+//                    $property->name,
+//                    $property->multiple
+//                        ? new Properties\MultipleCollection($this, $property)
+//                        : $property->default_value
+//                );
+//            }
+//        );
     }
 
     /**
@@ -180,7 +196,7 @@ final class Factory
      */
     public function has($key)
     {
-        if ($this->entity->getRelationValue($key) || $key === $this->entity->getKeyName()) {
+        if ($key === $this->entity->getKeyName()) {
             return false;
         }
 
@@ -192,9 +208,8 @@ final class Factory
      *
      * @param Collection $values
      */
-    public function setPropertyValues(Collection $values = null)
+    public function setPropertyValues(Collection $properties, Collection $values = null)
     {
-        $this->values = new Collection();
         if ($values !== null) {
             $values->each(
                 function (Value $v) use ($values) {
@@ -213,6 +228,12 @@ final class Factory
                 }
             );
         }
+        $properties->each(
+            function (Property $property, $name) {
+                $this->loaded !== true && ($this->loaded[$name] = $name);
+                $this->updateValue($name);
+            }
+        );
     }
 
     /**
@@ -220,13 +241,27 @@ final class Factory
      *
      * @return Collection
      */
-    public function getPropertyValues()
+    public function getPropertyValues($need = false)
     {
-        if ($this->values === null) {
-            $this->entity->load('values');
+        //load another values if don`t exist
+        if ($this->loaded !== true && $need !== false && !in_array($need, $this->loaded, true)) {
+            $properties = $this->properties->filter(
+                function ($property, $name) {
+                    return !in_array($name, $this->loaded, true);
+                }
+            );
+
+            $this->loaded = true;
+            if ($properties->count()) {
+                $this->entity->load(
+                    ['values' => function (Properties\Relations\Values $relation) use ($properties) {
+                        $relation->setProperties($properties);
+                    }]
+                );
+            }
         }
 
-        return $this->values ?: $this->values = new Collection();
+        return $this->values;
     }
 
     /**
@@ -236,7 +271,11 @@ final class Factory
      */
     public function getValuesToArray()
     {
-        return $this->getProperties()->map(
+        return $this->getProperties()->filter(
+            function ($property, $name) {
+                return $this->loaded === true || in_array($name, $this->loaded, true);
+            }
+        )->map(
             function (Property $property) {
                 $value = $this->getPropertyValue($property->name);
                 if ($value instanceof Value) {
@@ -265,7 +304,7 @@ final class Factory
     public function getPropertyValue($key)
     {
         /* @var Property $property */
-        $values = $this->getPropertyValues();
+        $values = $this->getPropertyValues($key);
         $value = $values->get($key);
         $property = $this->properties->get($key);
         if ($property !== null && $value === null && $property->multiple) {
@@ -273,6 +312,27 @@ final class Factory
         }
 
         return $value;
+    }
+
+    public function updateValue($key)
+    {
+        $this->entity->setRelation($key, $this->getValue($key));
+    }
+
+    public function getValueRelation($key)
+    {
+        $property = $this->getProperties()->get($key);
+        $instance = new Value;
+        $instance->setConnection($this->entity->getConnectionName());
+
+        //Builder $query, Model $parent, $foreignKey, $localKey
+        return new Relations\Values(
+            $instance->newQuery(),
+            $this->entity,
+            $instance->getTable().'.entity_id',
+            $this->entity->getKeyName(),
+            new Collection([$property])
+        );
     }
 
     /**
@@ -285,17 +345,26 @@ final class Factory
     public function getValue($key)
     {
         $value = $this->getPropertyValue($key);
+        $property = $this->getProperties()->get($key);
 
         if ($value instanceof Collection) {
-            return new MultipleCollection(
-                $this,
-                $this->properties->get($key),
+            /* @var MultipleCollection $collection
+             * @var Collection $value
+             */
+            $collection = $this->entity->relationLoaded($key) ? $this->entity->getRelation($key) : null;
+            if ($collection === null) {
+                $collection = new MultipleCollection($this, $property);
+            }
+
+            $collection->setValues(
                 $value->map(
                     function (Value $value) {
                         return $value->getAttributeValue('value');
                     }
                 )
             );
+
+            return $collection;
         } elseif ($value instanceof Value) {
             return $value->getAttributeValue('value');
         } else {
@@ -319,7 +388,7 @@ final class Factory
                 throw new \InvalidArgumentException('Value must be array');
             }
             $this->queuedDelete($property);
-            $this->getPropertyValues()->put($property->name, new Collection());
+            $this->getPropertyValues($key)->put($property->name, new Collection());
             if ($value !== null) {
                 foreach ($value as $val) {
                     $this->addValue($property, $val);
@@ -337,6 +406,7 @@ final class Factory
                 $this->addValue($property, $value);
             }
         }
+        $this->updateValue($key);
     }
 
     /**
@@ -369,7 +439,7 @@ final class Factory
         if ($property->multiple) {
             $this->getPropertyValue($property->name)->push($v);
         } else {
-            $this->getPropertyValues()->put($property->name, $v);
+            $this->getPropertyValues($property->name)->put($property->name, $v);
         }
 
         return $v;
@@ -404,7 +474,7 @@ final class Factory
                     ->delete();
             }
 
-            foreach ($this->getPropertyValues() as $value) {
+            foreach ($this->getPropertyValues(true) as $value) {
                 /* @var Value|Collection $value */
                 if ($value instanceof Collection) {
                     $inserts = $inserts->merge($value->where('exists', false, true));

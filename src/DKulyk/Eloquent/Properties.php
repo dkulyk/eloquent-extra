@@ -5,6 +5,7 @@ namespace DKulyk\Eloquent;
 use DKulyk\Eloquent\Properties\Relations\Values;
 use DKulyk\Eloquent\Properties\Value;
 use Illuminate\Database\Eloquent\Model as Eloquent;
+use Illuminate\Support\Collection;
 
 /**
  * Class Properties
@@ -58,31 +59,19 @@ trait Properties
      *
      * @return Values
      */
-    public function values()
+    public function values(Collection $properties = null)
     {
         $instance = new Value();
         $instance->setConnection($this->getConnectionName());
 
         //Builder $query, Model $parent, $foreignKey, $localKey
-        return new Values($instance->newQuery(), $this, $instance->getTable().'.entity_id', $this->getKeyName());
-    }
-
-    /**
-     * Get an attribute from the model.
-     *
-     * @param  string $key
-     *
-     * @return mixed
-     */
-    public function getAttribute($key)
-    {
-        $factory = $this->getPropertyFactory();
-
-        if ($factory->has($key)) {
-            return $factory->getValue($key);
-        }
-
-        return parent::getAttribute($key);
+        return new Values(
+            $instance->newQuery(),
+            $this,
+            $instance->getTable().'.entity_id',
+            $this->getKeyName(),
+            $properties
+        );
     }
 
     /**
@@ -109,18 +98,6 @@ trait Properties
     }
 
     /**
-     * Determine if an attribute exists on the model.
-     *
-     * @param  string $key
-     *
-     * @return bool
-     */
-    public function __isset($key)
-    {
-        return parent::__isset($key) || $this->getPropertyFactory()->has($key);
-    }
-
-    /**
      * Unset an attribute on the model.
      *
      * @param string $key
@@ -133,12 +110,28 @@ trait Properties
     }
 
     /**
+     * Handle dynamic method calls into the model.
+     *
+     * @param  string $method
+     * @param  array  $parameters
+     *
+     * @return mixed
+     */
+    public function __call($method, $parameters)
+    {
+        $factory = $this->getPropertyFactory();
+
+        return $factory->has($method) ? $factory->getValueRelation($method) : parent::__call($method, $parameters);
+    }
+
+    /**
      * Get an attribute array of all arrayable attributes.
      *
      * @return array
      */
     protected function getArrayableAttributes()
     {
+        /* @var Eloquent $this */
         return parent::getArrayableAttributes() + $this->getArrayableItems($this->getPropertyFactory()->getValuesToArray());
     }
 }
