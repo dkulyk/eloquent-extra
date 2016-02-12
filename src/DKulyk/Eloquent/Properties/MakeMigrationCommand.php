@@ -8,7 +8,6 @@ use Illuminate\Support\Composer;
 
 class MakeMigrationCommand extends BaseCommand
 {
-
     /**
      * The console command signature.
      *

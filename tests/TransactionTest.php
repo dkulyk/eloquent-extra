@@ -5,7 +5,6 @@ class TransactionTest extends TestCase
     /** @test */
     public function rollback_test()
     {
-
         ContactTransaction::saved(
             function () {
                 throw new Exception();
@@ -19,7 +18,6 @@ class TransactionTest extends TestCase
                 ]
             );
         } catch (Exception $e) {
-
         }
 
         static::assertNull(ContactTransaction::query()->first());

@@ -164,7 +164,7 @@ final class Factory
     {
         $this->entity = $entity;
         $this->values = new Collection();
-        $this->properties = Factory::getPropertiesByEntity($entity);
+        $this->properties = self::getPropertiesByEntity($entity);
     }
 
     /**
@@ -227,7 +227,7 @@ final class Factory
     }
 
     /**
-     * Get all property values
+     * Get all property values.
      *
      * @param string|bool $need
      *
@@ -257,7 +257,7 @@ final class Factory
     }
 
     /**
-     * Get values as array
+     * Get values as array.
      *
      * @param bool $all
      *
@@ -525,6 +525,5 @@ final class Factory
                 ->whereIn('property_id', $this->properties->pluck('id'))
                 ->delete();
         }
-
     }
 }

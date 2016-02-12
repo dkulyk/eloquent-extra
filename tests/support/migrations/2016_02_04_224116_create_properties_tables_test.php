@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreatePropertiesTablesTest extends Migration
 {
@@ -37,7 +37,6 @@ class CreatePropertiesTablesTest extends Migration
                 $table->foreign('property_id')
                     ->references('id')->on('properties')
                     ->onDelete('cascade');
-
             }
         );
     }

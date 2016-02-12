@@ -3,11 +3,10 @@ namespace DKulyk\Eloquent\Properties;
 
 use DKulyk\Eloquent\Properties;
 use Illuminate\Database\Eloquent\Model as Eloquent;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 
 /**
- * Class Property
+ * Class Property.
  *
  * @property int    $id
  * @property string $entity

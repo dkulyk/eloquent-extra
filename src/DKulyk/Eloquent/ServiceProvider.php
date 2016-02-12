@@ -1,4 +1,6 @@
-<?php namespace DKulyk\Eloquent;
+<?php
+
+namespace DKulyk\Eloquent;
 
 use DKulyk\Eloquent\Properties\Factory;
 use Illuminate\Foundation\Application;

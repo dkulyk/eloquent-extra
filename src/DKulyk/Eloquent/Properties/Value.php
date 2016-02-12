@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Support\Facades\Config;
 
 /**
- * Class Value
+ * Class Value.
  *
  * @property int      $entity_id
  * @property int      $property_id

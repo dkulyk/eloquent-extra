@@ -23,7 +23,6 @@ class CreateContactTableTest extends Migration
                 $table->softDeletes()->index();
             }
         );
-
     }
 
     /**

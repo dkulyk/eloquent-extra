@@ -2,12 +2,11 @@
 
 namespace DKulyk\Eloquent;
 
+use DKulyk\Eloquent\Relations\BelongsToLang as BelongsToLangRelation;
 use Illuminate\Database\Eloquent\Model as Eloquent;
-use \DKulyk\Eloquent\Relations\BelongsToLang as BelongsToLangRelation;
-use Illuminate\Support\Str;
 
 /**
- * Class BelongsToLang
+ * Class BelongsToLang.
  *
  * @mixin Eloquent
  */
@@ -16,13 +15,13 @@ trait BelongsToLang
     /**
      * Define an inverse one-to-one or many relationship.
      *
-     * @param  string $related
-     * @param  string $lang
-     * @param  string $foreignKey
-     * @param  string $otherKey
-     * @param  string $langKey
-     * @param  string $relation
-     * @param  string $fallback
+     * @param string $related
+     * @param string $lang
+     * @param string $foreignKey
+     * @param string $otherKey
+     * @param string $langKey
+     * @param string $relation
+     * @param string $fallback
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -39,7 +38,7 @@ trait BelongsToLang
 
         $foreignKey = $foreignKey ?: $this->getForeignKey();
 
-        $instance = new $related;
+        $instance = new $related();
 
         $localKey = $otherKey ?: $this->getKeyName();
 

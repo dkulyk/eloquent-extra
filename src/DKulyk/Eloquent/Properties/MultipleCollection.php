@@ -42,7 +42,6 @@ class MultipleCollection extends Collection
         $this->factory->updateValue($this->property->name);
     }
 
-
     /**
      * Set values to collection.
      *

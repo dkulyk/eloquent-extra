@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Lang;
 
 /**
- * Class BelongToLang
+ * Class BelongToLang.
  */
 class BelongsToLang extends BelongsTo
 {
@@ -42,8 +42,6 @@ class BelongsToLang extends BelongsTo
 
     /**
      * Set the base constraints on the relation query.
-     *
-     * @return void
      */
     public function addConstraints()
     {
@@ -57,9 +55,7 @@ class BelongsToLang extends BelongsTo
     /**
      * Set the constraints for an eager load of the relation.
      *
-     * @param  array $models
-     *
-     * @return void
+     * @param array $models
      */
     public function addEagerConstraints(array $models)
     {
@@ -75,9 +71,9 @@ class BelongsToLang extends BelongsTo
     /**
      * Match the eagerly loaded results to their parents.
      *
-     * @param  array      $models
-     * @param  Collection $results
-     * @param  string     $relation
+     * @param array      $models
+     * @param Collection $results
+     * @param string     $relation
      *
      * @return array
      */
@@ -125,8 +121,8 @@ class BelongsToLang extends BelongsTo
     /**
      * Handle dynamic method calls to the relationship.
      *
-     * @param  string $method
-     * @param  array  $parameters
+     * @param string $method
+     * @param array  $parameters
      *
      * @return mixed
      */

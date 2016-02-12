@@ -8,6 +8,7 @@ use Exception;
  * Trait Transaction.
  *
  * @mixed Eloquent
+ *
  * @property bool $savingTransaction
  */
 trait Transaction
