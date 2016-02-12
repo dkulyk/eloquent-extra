@@ -1,4 +1,5 @@
 <?php
+
 namespace DKulyk\Eloquent\Properties;
 
 use DKulyk\Eloquent\Properties;
