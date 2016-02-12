@@ -1,11 +1,10 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateContactTableTest extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -36,5 +35,4 @@ class CreateContactTableTest extends Migration
     {
         Schema::drop('contacts');
     }
-
 }

@@ -77,7 +77,7 @@ class QueryScope implements Scope
 
     /**
      * @param Collection $properties
-     * @param            $wheres
+     * @param array      $wheres
      * @param string     $table
      *
      * @return array
@@ -106,6 +106,4 @@ class QueryScope implements Scope
 
         return $fields;
     }
-
-
 }

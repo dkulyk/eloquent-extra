@@ -8,7 +8,7 @@ class TransactionTest extends TestCase
 
         ContactTransaction::saved(
             function () {
-                throw new Exception;
+                throw new Exception();
             }, 1
         );
 

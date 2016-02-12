@@ -5,7 +5,7 @@ namespace DKulyk\Eloquent\Properties;
 use Illuminate\Support\Collection;
 
 /**
- * Class MultipleCollection
+ * Class MultipleCollection.
  */
 class MultipleCollection extends Collection
 {
@@ -32,7 +32,7 @@ class MultipleCollection extends Collection
     }
 
     /**
-     * Add new value to property
+     * Add new value to property.
      *
      * @param mixed $value
      */
@@ -42,6 +42,12 @@ class MultipleCollection extends Collection
         $this->factory->updateValue($this->property->name);
     }
 
+
+    /**
+     * Set values to collection.
+     *
+     * @param Collection $values
+     */
     public function setValues(Collection $values)
     {
         $this->items = $values->all();

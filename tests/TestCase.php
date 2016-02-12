@@ -3,7 +3,7 @@
 class TestCase extends Orchestra\Testbench\TestCase
 {
     /**
-     * Setting up test
+     * Setting up test.
      */
     public function setUp()
     {
@@ -15,9 +15,7 @@ class TestCase extends Orchestra\Testbench\TestCase
     /**
      * Define environment setup.
      *
-     * @param  \Illuminate\Foundation\Application $app
-     *
-     * @return void
+     * @param \Illuminate\Foundation\Application $app
      */
     protected function getEnvironmentSetUp($app)
     {
@@ -43,7 +41,7 @@ class TestCase extends Orchestra\Testbench\TestCase
     {
         return [
             \Illuminate\Validation\ValidationServiceProvider::class,
-            \DKulyk\Eloquent\ServiceProvider::class
+            \DKulyk\Eloquent\ServiceProvider::class,
         ];
     }
 

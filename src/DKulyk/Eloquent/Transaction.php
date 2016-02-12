@@ -5,7 +5,7 @@ namespace DKulyk\Eloquent;
 use Exception;
 
 /**
- * Class Transaction
+ * Trait Transaction.
  *
  * @mixed Eloquent
  * @property bool $savingTransaction
@@ -15,16 +15,18 @@ trait Transaction
     /**
      * Save the model to the database.
      *
-     * @param  array $options
+     * @param array $options
+     *
+     * @throws Exception
      *
      * @return bool
-     * @throws Exception
      */
     public function save(array $options = [])
     {
         if (!property_exists($this, 'savingTransaction') || $this->savingTransaction) {
             return $this->saveWithinTransaction($options);
         }
+
         return parent::save($options);
     }
 
@@ -33,8 +35,9 @@ trait Transaction
      *
      * @param array $options
      *
-     * @return bool
      * @throws Exception
+     *
+     * @return bool
      */
     public function saveWithinTransaction(array $options = [])
     {
@@ -46,6 +49,7 @@ trait Transaction
             } else {
                 $connection->rollBack();
             }
+
             return $saved;
         } catch (Exception $e) {
             $connection->rollBack();

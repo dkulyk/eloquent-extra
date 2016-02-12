@@ -10,6 +10,9 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         return __DIR__.'/../../../config/eloquent-extra.php';
     }
 
+    /**
+     * Register the service provider.
+     */
     public function register()
     {
         $this->mergeConfigFrom($this->configPath(), 'eloquent-extra');
@@ -37,7 +40,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         $this->commands('command.eloquent-extra.logging-table');
         $this->commands('command.eloquent-extra.properties-table');
 
-        $types = (array)$this->app->make('config')->get('eloquent-extra.property_types', []);
+        $types = (array) $this->app->make('config')->get('eloquent-extra.property_types', []);
         foreach ($types as $type => $class) {
             Factory::registerType($type, $class);
         }
