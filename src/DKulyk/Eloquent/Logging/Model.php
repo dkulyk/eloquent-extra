@@ -3,6 +3,7 @@
 namespace DKulyk\Eloquent\Logging;
 
 use Carbon\Carbon;
+use DKulyk\Eloquent\PrintableJson;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,6 +21,7 @@ use Illuminate\Support\Facades\Auth;
  */
 class Model extends Eloquent
 {
+    use PrintableJson;
     const CREATE = 1;
     const UPDATE = 2;
     const DELETE = 3;
