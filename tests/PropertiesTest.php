@@ -28,7 +28,7 @@ class PropertiesTest extends TestCase
     public function it_should_make_a_casted_value()
     {
         $property = Factory::addProperty(ContactProperties::class, 'single', Factory::TYPE_INTEGER);
-        $value = $this->factory->addValue($property, 'aa');
+        //$value = $this->factory->addValue($property, 'aa');
 
         static::assertInstanceOf(Values\IntegerValue::class, $value);
         static::assertEquals(0, $value->value);

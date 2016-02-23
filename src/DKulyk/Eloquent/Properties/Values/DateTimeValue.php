@@ -12,4 +12,12 @@ class DateTimeValue extends Value
      * @var array
      */
     protected $dates = ['value'];
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSimpleValue()
+    {
+        return $this->serializeDate($this->getValue());
+    }
 }

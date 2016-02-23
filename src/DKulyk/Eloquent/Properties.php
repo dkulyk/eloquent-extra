@@ -5,7 +5,9 @@ namespace DKulyk\Eloquent;
 use DKulyk\Eloquent\Properties\Relations\Values;
 use DKulyk\Eloquent\Properties\Value;
 use Illuminate\Database\Eloquent\Model as Eloquent;
+use DKulyk\Eloquent\Properties\Contracts\Value as ValueContract;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 /**
  * Class Properties.
@@ -57,9 +59,11 @@ trait Properties
     /**
      * Get Values relationship.
      *
+     * @param Collection|null $properties
+     *
      * @return Values
      */
-    public function values(Collection $properties = null)
+    public function fields(Collection $properties = null)
     {
         $instance = new Value();
         $instance->setConnection($this->getConnectionName());
@@ -120,19 +124,14 @@ trait Properties
     public function __call($method, $parameters)
     {
         $factory = $this->getPropertyFactory();
+        if (preg_match('/get([^;]+?)Attribute/', $method, $m)) {
+            $name = lcfirst(Str::snake($m[1]));
+            if ($factory->has($name)) {
+                $value = $factory->getPropertyValue($name);
+                return $value instanceof ValueContract ? $value->getSimpleValue() : null;
+            }
+        }
 
-        return $factory->has($method) ? $factory->getValueRelation($method) : parent::__call($method, $parameters);
-    }
-
-    /**
-     * Get an attribute array of all arrayable attributes.
-     *
-     * @return array
-     */
-    protected function getArrayableAttributes()
-    {
-        /* @var Eloquent $this */
-        //only simple properties need merge
-        return parent::getArrayableAttributes() + $this->getArrayableItems($this->getPropertyFactory()->getValuesToArray(false));
+        return $factory->has($method) ? $this->fields(new Collection([$factory->get($method)])) : parent::__call($method, $parameters);
     }
 }

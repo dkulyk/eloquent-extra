@@ -40,7 +40,7 @@ class QueryScope implements Scope
             }
             if (count($props)) {
                 $eadgeLoads = [
-                        'values' => function (Values $relation) use ($props) {
+                        'fields' => function (Values $relation) use ($props) {
                             $relation->setProperties(new Collection($props));
                         },
                     ] + $eadgeLoads;

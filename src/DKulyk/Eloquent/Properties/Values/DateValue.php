@@ -2,17 +2,8 @@
 
 namespace DKulyk\Eloquent\Properties\Values;
 
-use DKulyk\Eloquent\Properties\Value;
-
-class DateValue extends Value
+class DateValue extends DateTimeValue
 {
-    /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array
-     */
-    protected $dates = ['value'];
-
     /**
      * The storage format of the model's date columns.
      *

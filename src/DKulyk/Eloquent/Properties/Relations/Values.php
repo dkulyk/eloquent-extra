@@ -113,7 +113,7 @@ class Values extends HasOneOrMany
     /**
      * Match the eagerly loaded results to their parents.
      *
-     * @param Eloquent[] $models
+     * @param Eloquent[]|Properties[] $models
      * @param Collection $results
      * @param string     $relation
      *
