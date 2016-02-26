@@ -140,18 +140,38 @@ class ValueCollection extends Collection implements ValueContract
     /**
      * Run a map over each of the items.
      *
-     * @param  callable $callback
+     * @param callable $callback
+     * @param bool     $rawObject
      *
      * @return static
      */
-    public function map(callable $callback)
+    public function map(callable $callback, $rawObject = false)
     {
         $items = [];
         foreach ($this->items as $key => $item) {
-            $items[$key] = $callback($item->getValue(), $key);
+            $items[$key] = $callback($rawObject ? $item : $item->getValue(), $key);
         }
 
         return new Collection($items);
+    }
+
+    /**
+     * Run a map over each of the items.
+     *
+     * @param callable $callback
+     * @param bool     $rawObject
+     *
+     * @return $this
+     */
+    public function each(callable $callback, $rawObject = false)
+    {
+        foreach ($this->items as $key => $item) {
+            if ($callback($rawObject ? $item : $item->getValue(), $key) === false) {
+                break;
+            }
+        }
+
+        return $this;
     }
 
 }

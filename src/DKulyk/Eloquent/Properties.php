@@ -104,6 +104,8 @@ trait Properties
     /**
      * Unset an attribute on the model.
      *
+     * @throws \InvalidArgumentException
+     *
      * @param string $key
      */
     public function __unset($key)
@@ -128,10 +130,11 @@ trait Properties
             $name = lcfirst(Str::snake($m[1]));
             if ($factory->has($name)) {
                 $value = $factory->getPropertyValue($name);
+
                 return $value instanceof ValueContract ? $value->getSimpleValue() : null;
             }
         }
 
-        return $factory->has($method) ? $this->fields(new Collection([$factory->get($method)])) : parent::__call($method, $parameters);
+        return $factory->has($method) ? $this->fields(new Collection([$factory->getProperties()->get($method)])) : parent::__call($method, $parameters);
     }
 }
