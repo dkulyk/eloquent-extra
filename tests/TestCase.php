@@ -3,13 +3,18 @@
 class TestCase extends Orchestra\Testbench\TestCase
 {
     /**
+     * @var \DKulyk\Eloquent\Propertier\Manager
+     */
+    protected $manager;
+    /**
      * Setting up test.
      */
     public function setUp()
     {
         parent::setUp();
-        $this->withFactories(__DIR__.'/factories');
         $this->runMigrations();
+        $this->withFactories(__DIR__.'/support/factories');
+        $this->manager = $this->app->make('dkulyk.propertier');
     }
 
     /**

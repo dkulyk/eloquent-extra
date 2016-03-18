@@ -1,6 +1,6 @@
 <?php
 
-namespace DKulyk\Eloquent\Properties\Contracts;
+namespace DKulyk\Eloquent\Propertier\Contracts;
 
 /**
  * Value contract.

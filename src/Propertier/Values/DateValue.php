@@ -1,6 +1,6 @@
 <?php
 
-namespace DKulyk\Eloquent\Properties\Values;
+namespace DKulyk\Eloquent\Propertier\Values;
 
 class DateValue extends DateTimeValue
 {

@@ -5,6 +5,7 @@ namespace DKulyk\Eloquent\Logging;
 use Illuminate\Database\Console\Migrations\BaseCommand;
 use Illuminate\Database\Migrations\MigrationCreator;
 use Illuminate\Support\Composer;
+use Illuminate\Support\Str;
 
 class TableCommand extends BaseCommand
 {
@@ -14,7 +15,7 @@ class TableCommand extends BaseCommand
      * @var string
      */
     protected $signature
-        = 'eloquent-extra:logging
+        = 'eloquent-extra:logging-table
         {--path= : The location where the migration file should be created.}';
 
     /**
@@ -22,7 +23,7 @@ class TableCommand extends BaseCommand
      *
      * @var string
      */
-    protected $name = 'eloquent-extra:logging';
+    protected $name = 'eloquent-extra:logging-table';
 
     /**
      * The console command description.
@@ -67,13 +68,18 @@ class TableCommand extends BaseCommand
     public function fire()
     {
         $files = $this->creator->getFilesystem();
-        $name = 'create_eloquent_log_table';
+
+        $log = new LoggingModel();
+        $table = $log->getTable();
+        $name = 'create_'.Str::snake($table).'_table';
 
         $path = $this->creator->create($name, $this->getMigrationPath());
 
         $file = pathinfo($path, PATHINFO_FILENAME);
 
-        $files->put($path, $files->get(__DIR__.'/stubs/database.stub'));
+        $stub = $files->get(__DIR__.'/stubs/database.stub');
+
+        $files->put($path, $this->creator->populateStub($name, $stub, $table));
 
         $this->line("<info>Created Migration:</info> $file");
 

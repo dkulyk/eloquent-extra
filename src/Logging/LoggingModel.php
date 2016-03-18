@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Auth;
  * @property int            $owner_id
  * @property-read Eloquent  $object
  */
-class Model extends Eloquent
+class LoggingModel extends Eloquent
 {
     use PrintableJson;
     const CREATE = 1;
@@ -112,7 +112,7 @@ class Model extends Eloquent
     public static function boot()
     {
         static::saving(
-            function (Model $model) {
+            function (LoggingModel $model) {
                 $model->owner_id = Auth::id();
                 $model->created_at = new Carbon();
             }

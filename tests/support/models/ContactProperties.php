@@ -2,5 +2,5 @@
 
 class ContactProperties extends Contact
 {
-    use \DKulyk\Eloquent\Properties;
+    use \DKulyk\Eloquent\Propertier;
 }

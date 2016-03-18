@@ -14,12 +14,14 @@ class TransactionTest extends TestCase
         try {
             ContactTransaction::create(
                 [
-                    'email' => 'test@example.com',
+                    'email' => 'transaction@test.com',
                 ]
             );
         } catch (Exception $e) {
         }
 
-        static::assertNull(ContactTransaction::query()->first());
+        static::assertNull(ContactTransaction::query()->where([
+            'email' => 'transaction@test.com'
+        ])->first());
     }
 }

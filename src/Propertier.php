@@ -2,10 +2,10 @@
 
 namespace DKulyk\Eloquent;
 
-use DKulyk\Eloquent\Properties\Relations\Values;
-use DKulyk\Eloquent\Properties\Value;
+use DKulyk\Eloquent\Propertier\Relations\Values;
+use DKulyk\Eloquent\Propertier\FieldValue;
 use Illuminate\Database\Eloquent\Model as Eloquent;
-use DKulyk\Eloquent\Properties\Contracts\Value as ValueContract;
+use DKulyk\Eloquent\Propertier\Contracts\Value as ValueContract;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
@@ -14,18 +14,18 @@ use Illuminate\Support\Str;
  *
  * @mixed Eloquent
  */
-trait Properties
+trait Propertier
 {
     /**
      * Property factory for this model instance.
      *
-     * @var Properties\Factory
+     * @var Propertier\Factory
      */
     private $propertyFactory;
 
     public static function bootProperties()
     {
-        static::addGlobalScope(new Properties\QueryScope());
+        static::addGlobalScope(new Propertier\QueryScope());
 
         static::saved(
             function (Eloquent $entity) {
@@ -45,12 +45,12 @@ trait Properties
     /**
      * Get property factory for this model instance.
      *
-     * @return Properties\Factory
+     * @return Propertier\Factory
      */
     public function getPropertyFactory()
     {
         if ($this->propertyFactory === null) {
-            $this->propertyFactory = new Properties\Factory($this);
+            $this->propertyFactory = new Propertier\Factory($this);
         }
 
         return $this->propertyFactory;
@@ -65,14 +65,14 @@ trait Properties
      */
     public function fields(Collection $properties = null)
     {
-        $instance = new Value();
+        $instance = new FieldValue();
         $instance->setConnection($this->getConnectionName());
 
         //Builder $query, Model $parent, $foreignKey, $localKey
         return new Values(
             $instance->newQuery(),
             $this,
-            $instance->getTable().'.entity_id',
+            'entity_id',
             $this->getKeyName(),
             $properties
         );

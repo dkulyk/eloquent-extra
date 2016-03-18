@@ -1,10 +1,10 @@
 <?php
 
-namespace DKulyk\Eloquent\Properties\Values;
+namespace DKulyk\Eloquent\Propertier\Values;
 
-use DKulyk\Eloquent\Properties\Value;
+use DKulyk\Eloquent\Propertier\FieldValue;
 
-class BooleanValue extends Value
+class BooleanValue extends FieldValue
 {
     /**
      * Value casting.

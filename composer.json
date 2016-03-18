@@ -22,7 +22,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "DKulyk\\Eloquent\\": "src/DKulyk/Eloquent/"
+            "DKulyk\\Eloquent\\": "src/"
         }
     },
     "autoload-dev": {

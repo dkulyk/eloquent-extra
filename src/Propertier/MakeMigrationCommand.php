@@ -1,6 +1,6 @@
 <?php
 
-namespace DKulyk\Eloquent\Properties;
+namespace DKulyk\Eloquent\Propertier;
 
 use Illuminate\Database\Console\Migrations\BaseCommand;
 use Illuminate\Database\Migrations\MigrationCreator;

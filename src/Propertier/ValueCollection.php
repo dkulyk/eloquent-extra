@@ -1,9 +1,9 @@
 <?php
 
-namespace DKulyk\Eloquent\Properties;
+namespace DKulyk\Eloquent\Propertier;
 
-use DKulyk\Eloquent\Properties;
-use DKulyk\Eloquent\Properties\Contracts\Value as ValueContract;
+use DKulyk\Eloquent\Propertier;
+use DKulyk\Eloquent\Propertier\Contracts\Value as ValueContract;
 use Illuminate\Support\Collection;
 
 class ValueCollection extends Collection implements ValueContract
@@ -14,25 +14,25 @@ class ValueCollection extends Collection implements ValueContract
     protected $factory;
 
     /**
-     * @var Property
+     * @var Field
      */
     protected $property;
 
     /**
      * The items contained in the collection.
      *
-     * @var array|Value[]
+     * @var array|FieldValue[]
      */
     protected $items = [];
 
     /**
      * ValueCollections constructor.
      *
-     * @param Factory  $factory
-     * @param Property $property
-     * @param array    $items
+     * @param Factory $factory
+     * @param Field   $property
+     * @param array   $items
      */
-    public function __construct(Factory $factory, Property $property = null, $items = [])
+    public function __construct(Factory $factory, Field $property = null, $items = [])
     {
         $this->property = $property;
         $this->factory = $factory;
@@ -75,12 +75,12 @@ class ValueCollection extends Collection implements ValueContract
     }
 
     /**
-     * @param mixed    $value
-     * @param Property $property
+     * @param mixed $value
+     * @param Field $property
      *
-     * @return Value
+     * @return FieldValue
      */
-    public static function makeValue($value, Property $property)
+    public static function makeValue($value, Field $property)
     {
         if ($value instanceof ValueContract) {
             return $value;
@@ -121,7 +121,7 @@ class ValueCollection extends Collection implements ValueContract
 
     public function offsetUnset($key)
     {
-        if (array_key_exists($key, $this->items) && $this->items[$key] instanceof Value) {
+        if (array_key_exists($key, $this->items) && $this->items[$key] instanceof FieldValue) {
             $this->factory->queuedDelete($this->items[$key]);
         }
         parent::offsetUnset($key);

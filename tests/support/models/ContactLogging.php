@@ -2,5 +2,5 @@
 
 class ContactLogging extends Contact
 {
-    use \DKulyk\Eloquent\Logging;
+    use \DKulyk\Eloquent\Logging\Logging;
 }

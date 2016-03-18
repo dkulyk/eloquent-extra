@@ -1,6 +1,6 @@
 <?php
 
-namespace DKulyk\Eloquent;
+namespace DKulyk\Eloquent\Logging;
 
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Support\Collection;
@@ -10,7 +10,7 @@ use Illuminate\Support\Collection;
  *
  * @mixin Eloquent
  *
- * @property Logging\Model[]|Collection $logs
+ * @property LoggingModel[]|Collection $logs
  */
 trait Logging
 {
@@ -19,7 +19,7 @@ trait Logging
      */
     public function logs()
     {
-        return $this->morphMany(Logging\Model::class, 'object');
+        return $this->morphMany(LoggingModel::class, 'object');
     }
 
     /**
@@ -27,6 +27,6 @@ trait Logging
      */
     public static function bootLogging()
     {
-        static::observe(Logging\Listener::class);
+        static::observe(LoggingListener::class);
     }
 }

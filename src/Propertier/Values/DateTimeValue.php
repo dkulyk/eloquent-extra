@@ -1,10 +1,10 @@
 <?php
 
-namespace DKulyk\Eloquent\Properties\Values;
+namespace DKulyk\Eloquent\Propertier\Values;
 
-use DKulyk\Eloquent\Properties\Value;
+use DKulyk\Eloquent\Propertier\FieldValue;
 
-class DateTimeValue extends Value
+class DateTimeValue extends FieldValue
 {
     /**
      * The attributes that should be mutated to dates.

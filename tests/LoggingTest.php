@@ -9,8 +9,8 @@ class LoggingTest extends TestCase
         $contact->email = 'test3@example.com';
         $contact->save();
         static::assertEquals(2, $contact->logs->count());
-        static::assertEquals(\DKulyk\Eloquent\Logging\Model::CREATE, $contact->logs[0]->type);
-        static::assertEquals(\DKulyk\Eloquent\Logging\Model::UPDATE, $contact->logs[1]->type);
+        static::assertEquals(\DKulyk\Eloquent\Logging\LoggingModel::CREATE, $contact->logs[0]->type);
+        static::assertEquals(\DKulyk\Eloquent\Logging\LoggingModel::UPDATE, $contact->logs[1]->type);
 
         static::assertEquals('test3@example.com', $contact->email);
         $contact = $contact->logs[0]->restore(true)->fresh();
