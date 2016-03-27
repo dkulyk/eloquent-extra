@@ -3,11 +3,12 @@
 namespace DKulyk\Eloquent;
 
 use Exception;
+use Illuminate\Database\Eloquent\Model as Eloquent;
 
 /**
  * Trait Transaction.
  *
- * @mixed Eloquent
+ * @mixin Eloquent
  *
  * @property bool $savingTransaction
  */
